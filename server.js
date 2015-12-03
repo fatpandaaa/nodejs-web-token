@@ -115,7 +115,7 @@ apiRoutes.post('/authenticate', function(req, res) {
 
 //console.log(localStorage.getItem("lastname"));
         
-        res.render('show');
+        
 
 
         res.json({
