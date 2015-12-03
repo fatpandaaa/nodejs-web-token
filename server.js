@@ -23,8 +23,22 @@ app.set('superSecret', config.secret); // secret variable
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
+app.set('views', './app/views');
+app.set('view engine', 'ejs');
 // use morgan to log requests to the console
 app.use(morgan('dev'));
+
+app.use(function(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
+    res.setHeader('Access-Control-Allow-Headers', 'x-access-token, token');
+    next();
+});
+
+
+
 //app.use(helmet);
 
 //app.disable('x-powered-by');
@@ -34,7 +48,9 @@ app.use(morgan('dev'));
 // =======================
 // basic route
 app.get('/', function(req, res) {
-    res.send('Hello! The API is at http://localhost:' + port + '/api');
+    //res.send('Hello! The API is at http://localhost:' + port + '/api');
+
+    res.render('login');
 });
 
 // API ROUTES -------------------
@@ -89,10 +105,19 @@ apiRoutes.post('/authenticate', function(req, res) {
         // if user is found and password is right
         // create a token
         var token = jwt.sign(user, app.get('superSecret'), {
-          expiresInMinutes: 300 // expires in 4 hours
+         // expires in 4 hours
         });
 
         // return the information including token as JSON
+        //localStorage.setItem("token", token);
+        res.setHeader("x-access-token",token);
+        console.log('token saved '+res.getHeader('x-access-token'));
+
+//console.log(localStorage.getItem("lastname"));
+        
+        //res.render('show');
+
+
         res.json({
           success: true,
           message: 'Enjoy your token!',
@@ -141,6 +166,7 @@ apiRoutes.use(function(req, res, next) {
 // route to show a random message (GET http://localhost:8080/api/)
 apiRoutes.get('/', function(req, res) {
   res.json({ message: 'Welcome to the coolest API on earth!' });
+
 });
 
 // route to return all users (GET http://localhost:8080/api/users)
