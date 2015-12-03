@@ -115,7 +115,7 @@ apiRoutes.post('/authenticate', function(req, res) {
 
 //console.log(localStorage.getItem("lastname"));
         
-        //res.render('show');
+        res.render('show');
 
 
         res.json({
@@ -134,7 +134,8 @@ apiRoutes.post('/authenticate', function(req, res) {
 apiRoutes.use(function(req, res, next) {
 
   // check header or url parameters or post parameters for token
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+ var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  //var token =  req.getHeader['x-access-token'];
 
   // decode token
   if (token) {
@@ -145,7 +146,8 @@ apiRoutes.use(function(req, res, next) {
         return res.json({ success: false, message: 'Failed to authenticate token.' });    
       } else {
         // if everything is good, save to request for use in other routes
-        req.decoded = decoded;    
+        req.decoded = decoded;   
+        //res.end();
         next();
       }
     });
@@ -172,7 +174,8 @@ apiRoutes.get('/', function(req, res) {
 // route to return all users (GET http://localhost:8080/api/users)
 apiRoutes.get('/users', function(req, res) {
   User.find({}, function(err, users) {
-    res.json(users);
+    //alert(req.headers['x-access-token']);
+    console.log('now i am at users list');
   });
 });   
 
