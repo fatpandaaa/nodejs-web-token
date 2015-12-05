@@ -8,6 +8,7 @@ var morgan      = require('morgan');
 var mongoose    = require('mongoose');
 var helmet		= require('helmet');
 
+
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config = require('./config'); // get our config file
 var User   = require('./app/models/user'); // get our mongoose model
@@ -22,6 +23,7 @@ app.set('superSecret', config.secret); // secret variable
 // use body parser so we can get info from POST and/or URL parameters
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 
 
 app.set('views', './app/views');
@@ -109,20 +111,38 @@ apiRoutes.post('/authenticate', function(req, res) {
         });
 
         // return the information including token as JSON
-        //localStorage.setItem("token", token);
-        res.setHeader("x-access-token",token);
-        console.log('token saved '+res.getHeader('x-access-token'));
+      
+        //res.setHeader("x-access-token",token);
+
+         
+      
+
+        
 
 //console.log(localStorage.getItem("lastname"));
         
         
 
 
-        res.json({
+      /*  res.json({
           success: true,
           message: 'Enjoy your token!',
           token: token
-        });
+        });*/
+
+
+var body = "hello world";
+res.writeHead(200, {
+    "Content-Length": body.length,
+    "Content-Type": "text/plain",
+    "Set-Cookie": "type=ninja",
+    "x-access-token":token
+});
+
+         res.end();
+         console.log('token saved '+res.getHeader('x-access-token'));
+
+
       }   
 
     }
@@ -174,7 +194,7 @@ apiRoutes.get('/', function(req, res) {
 // route to return all users (GET http://localhost:8080/api/users)
 apiRoutes.get('/users', function(req, res) {
   User.find({}, function(err, users) {
-    //alert(req.headers['x-access-token']);
+    
     console.log('now i am at users list');
   });
 });   
