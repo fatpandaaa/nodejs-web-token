@@ -107,7 +107,7 @@ apiRoutes.post('/authenticate', function(req, res) {
         // if user is found and password is right
         // create a token
         var token = jwt.sign(user, app.get('superSecret'), {
-         expiresInMinutes: 60 // expires in 4 hours
+        // expires in 4 hours
         });
 
         // return the information including token as JSON
@@ -136,7 +136,7 @@ apiRoutes.post('/authenticate', function(req, res) {
     "Content-Length": body.length,
     "Content-Type": "text/plain",
     "x-access-token":token,
-    "Location": "/api/users"
+    'Location': "/api/users"
      });
 
 
@@ -212,6 +212,7 @@ apiRoutes.get('/', function(req, res) {
 
 // route to return all users (GET http://localhost:8080/api/users)
 apiRoutes.get('/users', function(req, res) {
+
   User.find({}, function(err, users) {
     res.render('show');
     console.log('now i am at users list');
