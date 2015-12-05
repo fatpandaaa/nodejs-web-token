@@ -39,7 +39,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-
+app.disable('etag');
 
 //app.use(helmet);
 
@@ -107,7 +107,7 @@ apiRoutes.post('/authenticate', function(req, res) {
         // if user is found and password is right
         // create a token
         var token = jwt.sign(user, app.get('superSecret'), {
-         // expires in 4 hours
+         expiresInMinutes: 60 // expires in 4 hours
         });
 
         // return the information including token as JSON
@@ -124,23 +124,33 @@ apiRoutes.post('/authenticate', function(req, res) {
         
 
 
-      /*  res.json({
+   /*     res.json({
           success: true,
           message: 'Enjoy your token!',
           token: token
         });*/
 
 
-var body = "hello world";
-res.writeHead(200, {
+      var body = "hello world";
+      res.writeHead(200, {
     "Content-Length": body.length,
     "Content-Type": "text/plain",
-    "Set-Cookie": "type=ninja",
-    "x-access-token":token
-});
+    "x-access-token":token,
+    "Location": "http://www.google.com"
+     });
+
+
 
          res.end();
          console.log('token saved '+res.getHeader('x-access-token'));
+         
+
+
+
+
+
+
+
 
 
       }   
@@ -149,6 +159,15 @@ res.writeHead(200, {
 
   });
 });
+
+function redirect (url,res) {
+
+   res.redirect = function (url) {
+    res.setHeader('Location', url);
+     res.writeHead(302);
+     res.end('Redirect to ' + url);
+   }
+ }
 
 
 apiRoutes.use(function(req, res, next) {
