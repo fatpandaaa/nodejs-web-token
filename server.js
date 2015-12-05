@@ -136,7 +136,7 @@ apiRoutes.post('/authenticate', function(req, res) {
     "Content-Length": body.length,
     "Content-Type": "text/plain",
     "x-access-token":token,
-    "Location": "http://www.google.com"
+    "Location": "/api/users"
      });
 
 
