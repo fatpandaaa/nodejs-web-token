@@ -9,6 +9,5 @@
     "jsonwebtoken": "^5.4.1",
     "mongoose": "^4.2.9",
     "morgan": "^1.6.1",
-    "setheaders": "^0.1.5"
   }
 }
